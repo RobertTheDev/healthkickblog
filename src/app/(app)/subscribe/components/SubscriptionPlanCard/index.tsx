@@ -1,3 +1,4 @@
+import { CheckCircle } from 'lucide-react';
 import SubscriptionPlan from '../../interfaces/SubscriptionPlan';
 
 export default function SubscriptionPlanCard({
@@ -15,10 +16,13 @@ export default function SubscriptionPlanCard({
         <p className="mb-4 text-lg font-semibold text-gray-500">
           {plan.currency} {plan.price} {plan.description}
         </p>
-        <ul className="mb-4 space-y-2">
+        <ul className="mb-4 flex flex-col gap-2.5 space-y-2">
           {plan.benefits.map((benefit) => (
-            <li key={benefit} className="text-gray-700">
-              &bull; {benefit}
+            <li
+              key={benefit}
+              className="flex items-center gap-2.5 text-gray-700"
+            >
+              <CheckCircle size={20} /> {benefit}
             </li>
           ))}
         </ul>
