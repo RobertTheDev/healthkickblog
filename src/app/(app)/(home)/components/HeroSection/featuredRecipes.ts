@@ -1,4 +1,4 @@
-import Recipe from '../../../interfaces/Recipe';
+import Recipe from '../../../../interfaces/Recipe';
 
 const featuredRecipes: Recipe[] = [
   {
