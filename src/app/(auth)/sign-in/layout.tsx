@@ -15,8 +15,12 @@ export default function Layout({ children }: { children: ReactNode }) {
       </div>
       <div className="flex flex-1 flex-col">
         <div className="flex h-20 items-center justify-center bg-[#1A512D] lg:h-28">
-          <Link href="/" className="text-2xl font-semibold text-white">
-            Healthkick
+          <Link
+            href="/"
+            className="space flex items-center gap-2 text-center text-2xl font-bold tracking-wider text-white"
+          >
+            <img className="size-8" src="/logo.svg" />
+            healthkick
           </Link>
         </div>
         <main className="p-8 pt-12">{children}</main>
