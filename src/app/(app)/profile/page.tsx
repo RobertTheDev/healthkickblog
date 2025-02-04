@@ -12,14 +12,14 @@ import VerifyEmailForm from './components/VerifyEmailForm';
 
 export default function AccountPage() {
   return (
-    <div className="mx-auto max-w-2xl p-8">
-      <h1 className="mb-6 text-center text-3xl font-bold">Account Settings</h1>
-      <div className="flex flex-col">
+    <div className="w-full bg-gray-100">
+      <h1 className="mt-6 text-center text-3xl font-bold">Account Settings</h1>
+      <div className="mx-auto flex max-w-2xl flex-col p-8">
         <UpdateNameForm />
         <UpdatePasswordForm />
         <VerifyEmailForm />
-        <CloseAccountForm />
         <CancelSubscriptionForm />
+        <CloseAccountForm />
       </div>
     </div>
   );
