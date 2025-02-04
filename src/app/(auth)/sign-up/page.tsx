@@ -1,10 +1,10 @@
 import { Metadata } from 'next';
-import SignInForm from './components/SignInForm';
+import SignUpForm from './components/SignUpForm';
 
 export const metadata: Metadata = {
-  title: 'Sign In',
+  title: 'Sign Up',
 };
 
 export default async function SignIn() {
-  return <SignInForm />;
+  return <SignUpForm />;
 }

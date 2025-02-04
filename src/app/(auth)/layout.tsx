@@ -1,16 +1,29 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { ReactNode } from 'react';
+import { createClient } from '../utils/supabase/server';
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default async function Layout({ children }: { children: ReactNode }) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    redirect('/');
+  }
+
   return (
     <div className="flex min-h-screen justify-center bg-gray-50">
       <div className="relative hidden h-screen w-2/5 lg:block">
         <Image
           alt="A collection of vegetables"
           fill
+          priority
           className="object-cover"
-          src="/vegetables.jpg"
+          src="/sign-in.jpg"
         />
       </div>
       <div className="flex flex-1 flex-col">
@@ -19,7 +32,9 @@ export default function Layout({ children }: { children: ReactNode }) {
             href="/"
             className="space flex items-center gap-2 text-center text-2xl font-bold tracking-wider text-white"
           >
-            <img className="size-8" src="/logo.svg" />
+            <div className="relative size-8">
+              <Image fill alt="" className="object-cover" src="/logo.svg" />
+            </div>
             healthkick
           </Link>
         </div>

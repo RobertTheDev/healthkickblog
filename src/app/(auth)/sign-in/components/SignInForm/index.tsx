@@ -1,16 +1,15 @@
 'use client';
 
+import { createClient } from '@/app/utils/supabase/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { signInSchema, SignInSchemaType } from './signIn.schema';
 
-export default function SignInForm({
-  handleFormTypeChange,
-}: {
-  handleFormTypeChange: (newFormType: string) => void;
-}) {
+export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -22,18 +21,27 @@ export default function SignInForm({
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const onSubmit = async (data: SignInSchemaType) => {
+  const router = useRouter();
+
+  const onSubmit = async (formData: SignInSchemaType) => {
     setIsLoading(true);
-    try {
-      // Simulating form submission delay
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      alert(JSON.stringify(data));
-    } catch (error) {
-      console.error(error);
-    } finally {
+
+    const supabase = createClient();
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email: formData.email,
+      password: formData.password,
+    });
+
+    if (error) {
       setIsLoading(false);
+      setErrorMessage(error.message);
+      return;
     }
+
+    router.push('/');
   };
 
   return (
@@ -49,6 +57,7 @@ export default function SignInForm({
           id="email"
           type="email"
           {...register('email')}
+          aria-invalid={errors.email ? 'true' : 'false'}
           className={`mt-2 block w-full rounded-lg border px-4 py-3 text-gray-800 shadow-sm focus:outline-none focus:ring-1 ${
             errors.email
               ? 'border-red-500 focus:ring-red-500'
@@ -69,19 +78,20 @@ export default function SignInForm({
           >
             Password
           </label>
-          <button
+          <Link
             type="button"
-            onClick={() => handleFormTypeChange('forgotPassword')}
+            href="/forgot-password"
             className="text-sm font-semibold text-[#1A512D] hover:underline"
           >
             Forgot Password?
-          </button>
+          </Link>
         </div>
         <div className="relative mt-2">
           <input
             id="password"
             type={showPassword ? 'text' : 'password'}
             {...register('password')}
+            aria-invalid={errors.password ? 'true' : 'false'}
             className={`mt-2 block w-full rounded-lg border px-4 py-3 text-gray-800 shadow-sm focus:outline-none focus:ring-1 ${
               errors.email
                 ? 'border-red-500 focus:ring-red-500'
@@ -90,6 +100,7 @@ export default function SignInForm({
           />
           <button
             type="button"
+            aria-label={showPassword ? 'Hide password' : 'Show password'}
             className="absolute right-3 top-3 text-gray-600 hover:text-gray-800 focus:outline-none"
             onClick={() => setShowPassword(!showPassword)}
           >
@@ -101,7 +112,11 @@ export default function SignInForm({
         )}
       </div>
 
-      {/* <p className="mb-6 text-sm text-red-600">rrors.password.message</p> */}
+      {errorMessage && (
+        <p aria-live="polite" className="mb-6 text-sm text-red-600">
+          {errorMessage}
+        </p>
+      )}
 
       {/* Submit Button */}
       <button
@@ -115,12 +130,12 @@ export default function SignInForm({
       <div className="mt-8 text-center">
         <p className="text-sm text-gray-800">
           Don&apos;t have an account?{' '}
-          <button
-            onClick={() => handleFormTypeChange('signUp')}
+          <Link
+            href="/sign-up"
             className="font-semibold text-[#1A512D] hover:underline"
           >
             Sign Up
-          </button>
+          </Link>
         </p>
       </div>
     </form>

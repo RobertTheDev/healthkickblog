@@ -1,9 +1,11 @@
 'use client';
 
+import { createClient } from '@/app/utils/supabase/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   resetPasswordSchema,
@@ -13,6 +15,8 @@ import {
 export default function ResetPasswordForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const router = useRouter();
 
   const {
     register,
@@ -22,17 +26,34 @@ export default function ResetPasswordForm() {
     resolver: zodResolver(resetPasswordSchema),
   });
 
-  const onSubmit = async (data: ResetPasswordSchemaType) => {
-    setIsLoading(true);
-    try {
-      // Simulating form submission delay
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      alert(JSON.stringify(data));
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
+  useEffect(() => {
+    if (!window.location.search.includes('code')) {
+      setErrorMessage('Invalid or missing reset token.');
     }
+  }, []);
+
+  const handleTogglePasswordVisibility = () => setShowPassword((prev) => !prev);
+
+  const onSubmit = async (formData: ResetPasswordSchemaType) => {
+    setIsLoading(true);
+    setErrorMessage(null);
+
+    const supabase = createClient();
+
+    const { error } = await supabase.auth.updateUser({
+      password: formData.password,
+    });
+
+    setIsLoading(false);
+
+    if (error) {
+      setErrorMessage(
+        error.message || 'Something went wrong. Please try again.',
+      );
+      return;
+    }
+
+    router.push('/sign-in');
   };
 
   return (
@@ -41,20 +62,20 @@ export default function ResetPasswordForm() {
         Reset Your Password
       </h1>
 
-      {/* Password Input with Toggle */}
-      <div className="relative mb-6">
+      {/* Password Input */}
+      <div className="mb-6">
         <label
           htmlFor="password"
           className="block text-sm font-bold text-black"
         >
-          Password
+          New Password
         </label>
-        <div className="relative">
+        <div className="relative mt-2">
           <input
             id="password"
             type={showPassword ? 'text' : 'password'}
             {...register('password')}
-            className={`mt-2 block w-full rounded-lg border px-4 py-3 text-gray-800 shadow-sm focus:outline-none focus:ring-1 ${
+            className={`w-full rounded-lg border px-4 py-3 text-gray-800 shadow-sm focus:outline-none focus:ring-1 ${
               errors.password
                 ? 'border-red-500 focus:ring-red-500'
                 : 'border-gray-300 focus:ring-[#1A512D]'
@@ -62,8 +83,8 @@ export default function ResetPasswordForm() {
           />
           <button
             type="button"
+            onClick={handleTogglePasswordVisibility}
             className="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-600 focus:outline-none"
-            onClick={() => setShowPassword(!showPassword)}
           >
             {showPassword ? <EyeOffIcon /> : <EyeIcon />}
           </button>
@@ -73,13 +94,19 @@ export default function ResetPasswordForm() {
         )}
       </div>
 
-      {/* <p className="mb-6 text-sm text-red-600">rrors.password.message</p> */}
+      {errorMessage && (
+        <p className="mb-6 text-sm text-red-600">{errorMessage}</p>
+      )}
 
       {/* Submit Button */}
       <button
         type="submit"
-        className={`w-full rounded-lg px-5 py-3 font-semibold text-white transition-all focus:ring-2 focus:ring-[#3a7e5c] focus:ring-offset-2 ${isLoading ? 'cursor-not-allowed bg-[#3a7e5c]' : 'bg-[#1a512d] hover:bg-[#3a7e5c]'}`}
         disabled={isLoading}
+        className={`w-full rounded-lg px-5 py-3 font-semibold text-white transition-all focus:ring-2 focus:ring-[#3a7e5c] focus:ring-offset-2 ${
+          isLoading
+            ? 'cursor-not-allowed bg-[#3a7e5c]'
+            : 'bg-[#1a512d] hover:bg-[#3a7e5c]'
+        }`}
       >
         {isLoading ? 'Resetting Password...' : 'Reset Password'}
       </button>
