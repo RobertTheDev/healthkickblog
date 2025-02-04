@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    template: `%s | Healthkick Blog`,
-    default: `Healthkick Blog | Delicious & Nutritious Healthy Recipes for Every Lifestyle`,
+    template: `%s | Healthkick`,
+    default: `Healthkick | Delicious & Nutritious Healthy Recipes for Every Lifestyle`,
   },
   description:
     'Discover easy, wholesome, and delicious healthy food recipes at HealthKick Blog. From plant-based meals to high-protein snacks, fuel your body with the best ingredients. Eat better, feel better.',
