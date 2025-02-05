@@ -1,16 +1,26 @@
+import { getFoodRecipeBySlug } from '@/app/utils/contentful/contentfulClient';
 import { Metadata } from 'next';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'Recipe',
 };
 
-export default function RecipePage() {
+export default async function RecipePage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const slug = (await params).slug;
+
+  const recipe = await getFoodRecipeBySlug(slug);
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Image Header */}
       <div className="flex">
         <div className="w-1/2 p-8">
-          <h1 className="text-6xl font-bold">Delicious Chocolate Cake</h1>
+          <h1 className="text-6xl font-bold">{JSON.stringify(recipe)}</h1>
           <p className="mt-4 text-lg text-gray-600">
             A rich, moist, and indulgent treat perfect for every occasion.
           </p>
@@ -54,10 +64,14 @@ export default function RecipePage() {
           </div>
         </div>
         <div className="aspect-square w-1/2 bg-center">
-          <img
-            className="h-full w-full object-cover"
-            src="https://assets.bonappetit.com/photos/6792a8775e23b55d62e96f0d/1:1/w_2240,c_limit/fgfp-super-citrusy-oatmeal_RECIPE_V2_012125_0066_VOG_final.jpg"
-          />
+          <div className="h-full w-full">
+            <Image
+              alt="Delicious Chocolate Cake"
+              className="object-cover"
+              fill
+              src="https://assets.bonappetit.com/photos/6792a8775e23b55d62e96f0d/1:1/w_2240,c_limit/fgfp-super-citrusy-oatmeal_RECIPE_V2_012125_0066_VOG_final.jpg"
+            />
+          </div>
         </div>
       </div>
 

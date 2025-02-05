@@ -1,15 +1,25 @@
-import recipes from '@/app/data/recipes';
+import { getFoodRecipesByCategory } from '@/app/utils/contentful/contentfulClient';
 import { Metadata } from 'next';
-import RecipeCard from './components/RecipeCard';
 
 export const metadata: Metadata = {
   title: 'Recipes',
 };
 
-export default function Recipes({ params }: { params: { slug: string } }) {
+export default async function Recipes({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const category = (await params).slug;
+
+  const response = await getFoodRecipesByCategory(category);
+
+  const recipes = response.items;
+
   return (
     <main>
-      <div className="bg-[#FCF8E2] px-8 py-16">
+      <p>{JSON.stringify(recipes)}</p>
+      {/* <div className="bg-[#FCF8E2] px-8 py-16">
         <div className="mx-auto mb-16 max-w-7xl text-center">
           <h1 className="mb-6 text-5xl font-extrabold tracking-tight text-gray-800">
             Title
@@ -24,7 +34,7 @@ export default function Recipes({ params }: { params: { slug: string } }) {
               <RecipeCard key={recipe.id} recipe={recipe} />
             ))}
         </div>
-      </div>
+      </div> */}
     </main>
   );
 }
