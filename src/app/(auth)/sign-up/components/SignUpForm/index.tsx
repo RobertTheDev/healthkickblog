@@ -32,21 +32,37 @@ export default function SignUpForm() {
 
     const supabase = createClient();
 
-    const { error } = await supabase.auth.signUp({
+    const { data: authData, error } = await supabase.auth.signUp({
       email: formData.email,
       password: formData.password,
     });
-
-    setIsLoading(false);
 
     if (error) {
       setErrorMessage(
         error.message || 'Something went wrong. Please try again.',
       );
+      setIsLoading(false);
       return;
     }
 
-    setConfirmSignUp({ active: true, email: formData.email });
+    const { user } = authData;
+
+    if (user) {
+      const { error: dbError } = await supabase.from('profiles').insert([
+        {
+          id: user.id,
+          email: user.email,
+        },
+      ]);
+
+      if (dbError) {
+        setErrorMessage('Error creating profile: ' + dbError.message);
+      } else {
+        setConfirmSignUp({ active: true, email: formData.email });
+      }
+    }
+
+    setIsLoading(false);
   };
 
   return (
