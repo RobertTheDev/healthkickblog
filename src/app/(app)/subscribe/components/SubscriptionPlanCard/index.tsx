@@ -1,4 +1,5 @@
 import { CheckCircle } from 'lucide-react';
+import Link from 'next/link';
 import SubscriptionPlan from '../../interfaces/SubscriptionPlan';
 
 export default function SubscriptionPlanCard({
@@ -14,7 +15,7 @@ export default function SubscriptionPlanCard({
       <div className="flex flex-1 flex-col">
         <h2 className="mb-2 text-xl font-bold text-gray-800">{plan.name}</h2>
         <p className="mb-4 text-lg font-semibold text-gray-500">
-          {plan.currency} {plan.price} {plan.description}
+          ${plan.price} {plan.description}
         </p>
         <ul className="mb-4 flex flex-col gap-2.5 space-y-2">
           {plan.benefits.map((benefit) => (
@@ -27,9 +28,21 @@ export default function SubscriptionPlanCard({
           ))}
         </ul>
       </div>
-      <button className="w-full rounded-lg bg-[#173C24] px-6 py-3 font-semibold text-white">
-        Subscribe
-      </button>
+      {plan.priceId ? (
+        <Link
+          href={`/subscribe/${plan.priceId}`}
+          className="flex w-full items-center justify-center rounded-lg bg-[#173C24] px-6 py-3 font-semibold text-white"
+        >
+          Subscribe
+        </Link>
+      ) : (
+        <Link
+          href={`/`}
+          className="flex w-full items-center justify-center rounded-lg bg-[#173C24] px-6 py-3 font-semibold text-white"
+        >
+          Explore
+        </Link>
+      )}
     </div>
   );
 }
