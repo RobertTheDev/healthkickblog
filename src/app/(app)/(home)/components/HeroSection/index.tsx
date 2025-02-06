@@ -12,12 +12,15 @@ function HeroSectionCard({
   slug: string;
 }) {
   return (
-    <Link href={`/recipes/${slug}`}>
-      <div className="flex flex-col items-start">
-        <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-white shadow-lg">
-          <Image src={image} fill className="object-cover" alt={title} />
-        </div>
-        <h4 className="mt-4 text-xl font-bold text-gray-800">{title}</h4>
+    <Link
+      href={`/recipes/${slug}`}
+      className="flex flex-col overflow-hidden rounded-2xl bg-white shadow-lg"
+    >
+      <div className="relative aspect-square w-full">
+        <Image src={image} fill className="object-cover" alt={title} />
+      </div>
+      <div className="p-5">
+        <h4 className="text-xl font-bold text-[#193E20]">{title}</h4>
       </div>
     </Link>
   );
@@ -25,12 +28,12 @@ function HeroSectionCard({
 
 export default function HeroSection() {
   return (
-    <section className="h-1/2 bg-[#FCF8E2] px-8 py-16">
-      <h1 className="mb-16 text-center text-5xl font-bold text-gray-800">
+    <section className="px-24 py-20">
+      <h1 className="text-center text-5xl font-bold text-[#193E20]">
         Kick Start Your Health With Our Delicious Recipes
       </h1>
-      <div className="flex flex-col items-start justify-between gap-16 lg:flex-row">
-        <div className="flex w-full flex-col gap-8 lg:w-1/4">
+      <div className="mt-24 flex flex-col items-start justify-between gap-20 lg:flex-row">
+        <div className="flex w-full flex-col gap-10 lg:w-1/4">
           {featuredRecipes.slice(0, 2).map((recipe) => (
             <HeroSectionCard
               key={recipe.id}
@@ -49,7 +52,7 @@ export default function HeroSection() {
           />
         </div>
 
-        <div className="flex w-full flex-col gap-8 lg:w-1/4">
+        <div className="flex w-full flex-col gap-10 lg:w-1/4">
           {featuredRecipes.slice(3, 5).map((recipe) => (
             <HeroSectionCard
               key={recipe.id}

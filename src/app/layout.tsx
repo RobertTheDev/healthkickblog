@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     default: `Healthkick | Delicious & Nutritious Healthy Recipes for Every Lifestyle`,
   },
   description:
-    'Discover easy, wholesome, and delicious healthy food recipes at HealthKick Blog. From plant-based meals to high-protein snacks, fuel your body with the best ingredients. Eat better, feel better.',
+    'Discover easy, wholesome, and delicious healthy food recipes with HealthKick. From plant-based meals to high-protein snacks, fuel your body with the best ingredients. Eat better, feel better.',
 };
 
 export default function RootLayout({

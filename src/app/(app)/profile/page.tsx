@@ -30,7 +30,7 @@ export default async function AccountPage() {
   }
 
   return (
-    <div className="w-full bg-gray-100">
+    <div className="w-full">
       <h1 className="mt-6 text-center text-3xl font-bold">Account Settings</h1>
       <div className="mx-auto flex max-w-2xl flex-col p-8">
         <UpdateNameForm />

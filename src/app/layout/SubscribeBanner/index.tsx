@@ -2,35 +2,28 @@ import Link from 'next/link';
 
 export default function SubscribeBanner() {
   return (
-    <div className="fixed bottom-0 hidden h-64 w-full bg-white shadow-lg">
-      <div className="flex items-start justify-between gap-4 p-8">
-        <div className="aspect-square w-48">
-          <img
-            className="h-full w-full object-cover"
-            src="https://assets.bonappetit.com/photos/667ae5f12379750c75f3b045/original/pass/BAEPI_SiteMeter_DT_375x250@2%20(1).gif?format=original"
-          />
+    <div className="fixed bottom-0 z-[999999999] hidden w-full border-t border-t-gray-200 bg-white shadow-xl">
+      <div className="flex flex-col items-center justify-center p-8 lg:items-center">
+        <div className="flex flex-col items-center">
+          <h4 className="text-center text-3xl font-semibold">
+            Ready for More?
+          </h4>
+          <div className="mt-6 aspect-square w-32 overflow-hidden rounded-full">
+            <img className="h-full w-full object-cover" src="/banner.jpg" />
+          </div>
         </div>
-        <div>
-          <p className="text-4xl font-semibold">Ready for More?</p>
-          <p className="font-medium">
-            You’ve read your last free article. Start your free trial and get
-            unlimited access—cancel anytime.
+
+        <div className="mt-4 flex flex-col items-center gap-4">
+          <p className="mt-2 text-center text-base font-medium">
+            Subscribe and gain access to exclusive recipes, cooking tips, and
+            more!
           </p>
-        </div>
-        <div>
           <Link
             href="/subscribe"
-            className="rounded-full bg-black p-4 font-medium text-white"
+            className="mt-4 flex w-full max-w-64 items-center justify-center rounded-full bg-[#1a512d] px-6 py-4 text-sm font-semibold text-white"
           >
-            Start free trial
+            Subscribe
           </Link>
-
-          <p className="mt-8">
-            Aleady a member?{' '}
-            <Link className="underline" href="/sign-in">
-              Sign in
-            </Link>
-          </p>
         </div>
       </div>
     </div>
